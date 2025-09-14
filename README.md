@@ -13,9 +13,3 @@ It connects to a Shopify development store, ingests customers/orders/products in
 
 ---
 
-## ⚙️ Setup Instructions
-
-### Backend
-1. Clone repo: `git clone https://github.com/your-username/xeno-fde-backend`
-2. Install deps: `npm install`
-3. Set env vars in `.env`:
