@@ -1,0 +1,51 @@
+datasource db {
+  provider = "mysql"   // or "postgresql" if you’re using Postgres
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Tenant {
+  id          String     @id @default(cuid())
+  shopName    String
+  accessToken String
+  createdAt   DateTime   @default(now())
+
+  customers   Customer[]
+  products    Product[]
+  orders      Order[]
+}
+
+model Customer {
+  id         String   @id @default(cuid())
+  tenantId   String
+  tenant     Tenant   @relation(fields: [tenantId], references: [id])  // 👈 added relation
+  shopifyId  String   @unique
+  email      String?
+  firstName  String?
+  lastName   String?
+  totalSpend Float    @default(0)
+  createdAt  DateTime @default(now())
+}
+
+model Product {
+  id        String   @id @default(cuid())
+  tenantId  String
+  tenant    Tenant   @relation(fields: [tenantId], references: [id])   // 👈 added relation
+  shopifyId String   @unique
+  title     String
+  price     Float?
+  createdAt DateTime @default(now())
+}
+
+model Order {
+  id         String   @id @default(cuid())
+  tenantId   String
+  tenant     Tenant   @relation(fields: [tenantId], references: [id])  // 👈 added relation
+  shopifyId  String   @unique
+  totalPrice Float
+  status     String
+  createdAt  DateTime @default(now())
+}
